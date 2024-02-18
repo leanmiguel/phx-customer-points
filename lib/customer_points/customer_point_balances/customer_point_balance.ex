@@ -17,7 +17,6 @@ defmodule CustomerPoints.CustomerPointBalances.CustomerPointBalance do
     |> cast(attrs, [:prev_points, :points_change, :new_points, :customer_id])
     |> validate_required([:prev_points, :points_change, :new_points, :customer_id])
     |> foreign_key_constraint(:customer_id)
-    |> validate_number(:points_change, greater_than: 0)
   end
 
   def new_changeset(customer_point_balance, attrs) do
