@@ -8,7 +8,7 @@ defmodule CustomerPointsWeb.CustomerBalanceController do
 
   def create(conn, %{"customer_balance" => customer_balance_params, "customer_id" => customer_id}) do
     with {:ok, %CustomerBalance{} = customer_balance} <-
-           CustomerBalances.create_manual_customer_balance(customer_balance_params, customer_id) do
+           CustomerBalances.create_customer_balance(customer_balance_params, customer_id) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/customer_balances/#{customer_balance}")

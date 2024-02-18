@@ -13,7 +13,7 @@ defmodule CustomerPoints.CustomerPointBalances.CustomerPointBalance do
   end
 
   @doc false
-  def changeset(customer_point_balance, attrs) do
+  def initial_changeset(customer_point_balance, attrs) do
     customer_point_balance
     |> cast(attrs, [:type, :prev_points, :points_change, :new_points, :customer_id])
     |> validate_required([:type, :prev_points, :points_change, :new_points, :customer_id])

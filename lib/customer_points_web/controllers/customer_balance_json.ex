@@ -12,7 +12,6 @@ defmodule CustomerPointsWeb.CustomerBalanceJSON do
   def show_customer_balance(%{customer_balance: customer_balance}) do
     %{
       data: %{
-        id: customer_balance.id,
         current_balance: customer_balance.new_balance
       }
     }
