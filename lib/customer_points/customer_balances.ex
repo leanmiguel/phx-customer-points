@@ -26,8 +26,9 @@ defmodule CustomerPoints.CustomerBalances do
           limit: 1
       )
 
+    attrs = Map.put(attrs, :customer_id, customer_id)
+
     %CustomerBalance{
-      customer_id: b.customer_id,
       prev_balance: b.new_balance
     }
     |> CustomerBalance.new_balance_changeset(attrs)

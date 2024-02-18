@@ -14,7 +14,10 @@ defmodule CustomerPoints.Orders.Order do
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:order_id, :paid, :currency])
-    |> validate_required([:order_id, :paid, :currency])
+    |> cast(attrs, [:order_id, :paid, :currency, :customer_id])
+    |> validate_required([:order_id, :paid, :currency, :customer_id])
+    |> validate_format(:currency, ~r/JPY/)
+    |> validate_number(:paid, greater_than: 0)
+    |> foreign_key_constraint(:customer_id)
   end
 end
