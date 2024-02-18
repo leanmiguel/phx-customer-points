@@ -1,24 +1,65 @@
-# CustomerPoints
+# Getting Going
 
-To start your Phoenix server:
+mix setup
+mix ecto.create
+mix ecto.migrate
+mix phx.server
 
-- Run `mix setup` to install and setup dependencies
-- Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+single flow
+create a new customer
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+```
+curl --request POST \
+  --url http://localhost:4000/api/customers/ \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"customer": {
+			"phone_number": "4031234567"
+	}
+}'
+```
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+manually change balance
 
-## Learn more
+```
+curl --request POST \
+  --url http://localhost:4000/api/customers/1/balances/manual_update \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"customer_balance": {
+		"balance_change": 5000
+	}
+}'
+```
 
-- Official website: https://www.phoenixframework.org/
-- Guides: https://hexdocs.pm/phoenix/overview.html
-- Docs: https://hexdocs.pm/phoenix
-- Forum: https://elixirforum.com/c/phoenix-forum
-- Source: https://github.com/phoenixframework/phoenix
+get user balance
 
-##
+```
+curl --request GET \
+  --url http://localhost:4000/api/customers/1/balances
+```
 
-Commit
+make an order
 
-done previous break
+```
+curl --request POST \
+  --url http://localhost:4000/api/orders/ \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"order": {
+		"currency": "JPY",
+		"order_id": "d9675ba8-e352-422e-bb6d-9d230ae73fe8",
+		"paid": 1000
+	},
+	"customer": {
+		"phone_number": "4031234567"
+	}
+}'
+```
+
+get user balance and see updated points
+
+```
+curl --request GET \
+  --url http://localhost:4000/api/customers/1/balances
+```
