@@ -1,9 +1,9 @@
 # Getting Going
 
-mix setup
-mix ecto.create
-mix ecto.migrate
-mix phx.server
+1. mix setup
+2. mix ecto.create
+3. mix ecto.migrate
+4. mix phx.server
 
 single flow
 create a new customer
@@ -63,3 +63,8 @@ get user balance and see updated points
 curl --request GET \
   --url http://localhost:4000/api/customers/1/balances
 ```
+
+## Extra features I wanted but not done in time
+
+- instead of the url param being the customer id, allow it to be either email or phone number.
+- testing
