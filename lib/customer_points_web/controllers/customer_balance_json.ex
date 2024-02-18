@@ -1,18 +1,21 @@
 defmodule CustomerPointsWeb.CustomerBalanceJSON do
   alias CustomerPoints.CustomerBalances.CustomerBalance
 
-  @doc """
-  Renders a list of customer_balances.
-  """
   def index(%{customer_balances: customer_balances}) do
     %{data: for(customer_balance <- customer_balances, do: data(customer_balance))}
   end
 
-  @doc """
-  Renders a single customer_balance.
-  """
   def show(%{customer_balance: customer_balance}) do
     %{data: data(customer_balance)}
+  end
+
+  def show_customer_balance(%{customer_balance: customer_balance}) do
+    %{
+      data: %{
+        id: customer_balance.id,
+        current_balance: customer_balance.new_balance
+      }
+    }
   end
 
   defp data(%CustomerBalance{} = customer_balance) do

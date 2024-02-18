@@ -63,6 +63,7 @@ defmodule CustomerPoints.Customers do
           new_balance: 0,
           customer_id: customer.id
         })
+        |> CustomerBalance.add_init_type()
         |> Repo.insert()
       end)
       |> Ecto.Multi.run(:customer_point_balance, fn _repo, %{customer: customer} ->

@@ -24,7 +24,16 @@ defmodule CustomerPointsWeb.Router do
   scope "/api", CustomerPointsWeb do
     pipe_through :api
 
-    resources "/customers", CustomerController, except: [:new, :edit]
+    scope "/customers" do
+      post "/", CustomerController, :create
+
+      scope "/:customer_id/balances" do
+        get "/", CustomerBalanceController, :show
+        post "/manual_update", CustomerBalanceController, :create
+      end
+    end
+
+    post "/orders", OrderController, :create
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

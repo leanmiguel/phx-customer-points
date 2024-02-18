@@ -35,7 +35,14 @@ defmodule CustomerPoints.CustomerBalances do
       ** (Ecto.NoResultsError)
 
   """
-  def get_customer_balance!(id), do: Repo.get!(CustomerBalance, id)
+  def get_customer_balance!(customer_id) do
+    Repo.one!(
+      from cb in CustomerBalance,
+        where: cb.customer_id == ^customer_id,
+        order_by: [desc: cb.inserted_at],
+        limit: 1
+    )
+  end
 
   @doc """
   Creates a customer_balance.
@@ -49,9 +56,22 @@ defmodule CustomerPoints.CustomerBalances do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_customer_balance(attrs \\ %{}) do
-    %CustomerBalance{}
-    |> CustomerBalance.changeset(attrs)
+  def create_manual_customer_balance(attrs \\ %{}, customer_id) do
+    b =
+      Repo.one!(
+        from cb in CustomerBalance,
+          where: cb.customer_id == ^customer_id,
+          order_by: [desc: cb.inserted_at],
+          limit: 1
+      )
+
+    %CustomerBalance{
+      customer_id: b.customer_id
+    }
+    |> CustomerBalance.manual_balance_changeset(attrs)
+    |> CustomerBalance.put_prev_balance(b.new_balance)
+    |> CustomerBalance.put_new_balance()
+    |> CustomerBalance.determine_balance_type()
     |> Repo.insert()
   end
 
