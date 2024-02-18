@@ -15,27 +15,27 @@ defmodule CustomerPoints.Customers do
     query =
       from c in Customer,
         where: c.email == ^email or c.phone_number == ^number,
-        select: %Customer{}
+        select: %Customer{id: c.id}
 
-    Repo.one(query)
+    Repo.one!(query)
   end
 
   def get_customer_by_email_or_number(email, "") when is_binary(email) and email != "" do
     query =
       from c in Customer,
         where: c.email == ^email,
-        select: %Customer{}
+        select: %Customer{id: c.id}
 
-    Repo.one(query)
+    Repo.one!(query)
   end
 
   def get_customer_by_email_or_number("", number) when is_binary(number) and number != "" do
     query =
       from c in Customer,
         where: c.phone_number == ^number,
-        select: %Customer{}
+        select: %Customer{id: c.id}
 
-    Repo.one(query)
+    Repo.one!(query)
   end
 
   def get_customer_by_email_or_number(nil, nil), do: nil

@@ -26,7 +26,16 @@ defmodule CustomerPoints.CustomerBalances do
           limit: 1
       )
 
-    attrs = Map.put(attrs, :customer_id, customer_id)
+    # TODO: hacky as I couldn't figure out how to normalize atoms and strings
+    attrs =
+      Map.put(attrs, :customer_id, customer_id)
+      |> Map.new(fn {k, v} ->
+        if is_binary(k) do
+          {String.to_atom(k), v}
+        else
+          {k, v}
+        end
+      end)
 
     %CustomerBalance{
       prev_balance: b.new_balance

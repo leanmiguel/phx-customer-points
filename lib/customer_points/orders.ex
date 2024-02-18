@@ -14,15 +14,17 @@ defmodule CustomerPoints.Orders do
   @point_rate 0.01
 
   def create_order(attrs \\ %{}, customer) do
-    attrs = Map.put(attrs, :customer_id, customer.id)
-
     multi =
       Ecto.Multi.new()
-      |> Ecto.Multi.insert(:order, Order.changeset(%Order{}, attrs))
+      |> Ecto.Multi.insert(
+        :order,
+        # TODO: hacky, but i couldn't figure out how to not normalize atoms and strings between changesets quickly enough
+        Order.changeset(%Order{}, Map.put(attrs, "customer_id", customer.id))
+      )
       |> Ecto.Multi.run(:customer_balance, fn _repo, _multi ->
         CustomerBalances.create_customer_balance(
           %{
-            balance_change: -attrs[:paid]
+            balance_change: attrs["paid"] * -1
           },
           customer.id
         )
@@ -30,7 +32,7 @@ defmodule CustomerPoints.Orders do
       |> Ecto.Multi.run(:customer_point_balance, fn _repo, _multi ->
         CustomerPointBalances.create_customer_point_balance(
           %{
-            points_change: attrs[:paid] * @point_rate
+            points_change: round(attrs["paid"] * @point_rate)
           },
           customer.id
         )
