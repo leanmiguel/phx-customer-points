@@ -7,7 +7,7 @@ defmodule CustomerPoints.Repo.Migrations.CreateCustomerPointBalances do
       add :prev_points, :integer
       add :points_change, :integer
       add :new_points, :integer
-      add :customer_id, references(:customers, on_delete: :nothing)
+      add :customer_id, references(:customers, on_delete: :nothing), null: false
 
       timestamps(type: :utc_datetime)
     end

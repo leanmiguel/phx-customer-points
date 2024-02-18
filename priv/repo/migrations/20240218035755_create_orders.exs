@@ -6,7 +6,7 @@ defmodule CustomerPoints.Repo.Migrations.CreateOrders do
       add :order_id, :uuid
       add :paid, :integer
       add :currency, :string
-      add :customer_id, references(:customers, on_delete: :nothing)
+      add :customer_id, references(:customers, on_delete: :nothing), null: false
 
       timestamps(type: :utc_datetime)
     end

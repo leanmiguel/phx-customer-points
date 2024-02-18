@@ -15,7 +15,7 @@ defmodule CustomerPoints.CustomerBalances.CustomerBalance do
   @doc false
   def changeset(customer_balance, attrs) do
     customer_balance
-    |> cast(attrs, [:type, :prev_balance, :balance_change, :new_balance])
-    |> validate_required([:type, :prev_balance, :balance_change, :new_balance])
+    |> cast(attrs, [:type, :prev_balance, :balance_change, :new_balance, :customer_id])
+    |> validate_required([:type, :prev_balance, :balance_change, :new_balance, :customer_id])
   end
 end

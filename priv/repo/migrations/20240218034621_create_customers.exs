@@ -8,5 +8,8 @@ defmodule CustomerPoints.Repo.Migrations.CreateCustomers do
 
       timestamps(type: :utc_datetime)
     end
+
+    create unique_index(:customers, [:email])
+    create unique_index(:customers, [:phone_number])
   end
 end

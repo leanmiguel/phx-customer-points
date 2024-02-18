@@ -7,6 +7,8 @@ defmodule CustomerPoints.Customers do
   alias CustomerPoints.Repo
 
   alias CustomerPoints.Customers.Customer
+  alias CustomerPoints.CustomerBalances.CustomerBalance
+  alias CustomerPoints.CustomerPointBalances.CustomerPointBalance
 
   @doc """
   Returns the list of customers.
@@ -50,9 +52,37 @@ defmodule CustomerPoints.Customers do
 
   """
   def create_customer(attrs \\ %{}) do
-    %Customer{}
-    |> Customer.changeset(attrs)
-    |> Repo.insert()
+    multi =
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert(:customer, Customer.changeset(%Customer{}, attrs))
+      |> Ecto.Multi.run(:customer_balance, fn _repo, %{customer: customer} ->
+        CustomerBalance.changeset(%CustomerBalance{}, %{
+          type: "initial",
+          prev_balance: 0,
+          balance_change: 0,
+          new_balance: 0,
+          customer_id: customer.id
+        })
+        |> Repo.insert()
+      end)
+      |> Ecto.Multi.run(:customer_point_balance, fn _repo, %{customer: customer} ->
+        CustomerPointBalance.changeset(%CustomerPointBalance{}, %{
+          type: "initial",
+          prev_points: 0,
+          points_change: 0,
+          new_points: 0,
+          customer_id: customer.id
+        })
+        |> Repo.insert()
+      end)
+
+    case Repo.transaction(multi) do
+      {:ok, %{customer: customer}} ->
+        {:ok, customer}
+
+      {:error, _, reason, _changes} ->
+        {:error, reason}
+    end
   end
 
   @doc """

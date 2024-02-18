@@ -21,9 +21,11 @@ defmodule CustomerPointsWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", CustomerPointsWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", CustomerPointsWeb do
+    pipe_through :api
+
+    resources "/customers", CustomerController, except: [:new, :edit]
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:customer_points, :dev_routes) do
