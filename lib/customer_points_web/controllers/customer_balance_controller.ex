@@ -1,6 +1,7 @@
 defmodule CustomerPointsWeb.CustomerBalanceController do
   use CustomerPointsWeb, :controller
 
+  alias CustomerPoints.CustomerPointBalances
   alias CustomerPoints.CustomerBalances
   alias CustomerPoints.CustomerBalances.CustomerBalance
 
@@ -18,6 +19,11 @@ defmodule CustomerPointsWeb.CustomerBalanceController do
 
   def show(conn, %{"customer_id" => customer_id}) do
     customer_balance = CustomerBalances.get_customer_balance!(customer_id)
-    render(conn, :show_customer_balance, customer_balance: customer_balance)
+    customer_points_balance = CustomerPointBalances.get_customer_point_balance!(customer_id)
+
+    render(conn, :show_customer_balance,
+      customer_balance: customer_balance,
+      customer_points_balance: customer_points_balance
+    )
   end
 end
