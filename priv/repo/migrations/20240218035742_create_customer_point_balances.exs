@@ -3,7 +3,6 @@ defmodule CustomerPoints.Repo.Migrations.CreateCustomerPointBalances do
 
   def change do
     create table(:customer_point_balances) do
-      add :type, :string
       add :prev_points, :integer
       add :points_change, :integer
       add :new_points, :integer

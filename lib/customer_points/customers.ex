@@ -65,7 +65,6 @@ defmodule CustomerPoints.Customers do
       end)
       |> Ecto.Multi.run(:customer_point_balance, fn _repo, %{customer: customer} ->
         CustomerPointBalance.initial_changeset(%CustomerPointBalance{}, %{
-          type: "initial",
           prev_points: 0,
           points_change: 0,
           new_points: 0,
